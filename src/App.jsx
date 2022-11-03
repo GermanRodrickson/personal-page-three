@@ -4,9 +4,9 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useGLTF, Environment } from '@react-three/drei';
 import { EffectComposer, DepthOfField } from '@react-three/postprocessing';
 
-function Banana({ z }) {
+function Keyboard({ z }) {
   const ref = useRef();
-  const { nodes, materials } = useGLTF('/banana-v1-transformed.glb');
+  const { nodes, materials } = useGLTF('/keyboard-v1-transformed.glb');
   const { viewport, camera } = useThree();
   const { width, height } = viewport.getCurrentViewport(camera, [0, 0, z]);
   const [data] = useState({
@@ -28,30 +28,37 @@ function Banana({ z }) {
   });
 
   return (
-    <mesh
-      ref={ref}
-      geometry={nodes.Banana.geometry}
-      material={materials.Skin}
-      material-emissive="orange"
-    />
+    <group ref={ref} dispose={null}>
+      <mesh
+        geometry={nodes.Object_2001.geometry}
+        material={materials.Small_Buttons}
+      />
+      <mesh
+        geometry={nodes.Object_2001_1.geometry}
+        material={materials.Big_Buttons}
+      />
+      <mesh
+        geometry={nodes.Object_2001_2.geometry}
+        material={materials.Chassis}
+      />
+    </group>
   );
 }
 
-export default function App({ count = 200, depth = 80 }) {
+export default function App({ count = 200, depth = 90 }) {
   return (
     <Canvas gl={{ alpha: false }} camera={{ near: 0.01, far: 110, fov: 30 }}>
-      <color attach="background" args={['#ffbf40']} />
+      <color attach="background" args={['black']} />
       <spotLight position={[10, 10, 10]} intensity={1} />
       <Suspense fallback={null}>
         <Environment preset="sunset" />
         {Array.from({ length: count }, (_, i) => (
-          <Banana key={i} z={-(i / count) * depth - 20} />
+          <Keyboard key={i} z={-(i / count) * depth - 20} />
         ))}
         <EffectComposer>
           <DepthOfField
             target={[0, 0, depth / 2]}
             focalLength={0.5}
-            bokehScale={5}
             height={700}
           />
         </EffectComposer>
