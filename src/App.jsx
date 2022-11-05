@@ -10,18 +10,20 @@ export default function App() {
     if (loading) {
       setTimeout(() => {
         setLoading(false);
-      }, 4000);
+      }, 2000);
     }
   }, [loading]);
 
   if (loading) return <Keyboard />;
 
   return (
-    <Canvas>
-      <ambientLight />
-      <Suspense fallback={null}>
-        <Scene />
-      </Suspense>
-    </Canvas>
+    <section className="w-full h-screen overflow-hidden animate-fade">
+      <Canvas>
+        <ambientLight />
+        <Suspense fallback={null}>
+          <Scene />
+        </Suspense>
+      </Canvas>
+    </section>
   );
 }
